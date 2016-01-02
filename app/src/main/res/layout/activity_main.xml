@@ -29,6 +29,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+<<<<<<< HEAD
         android:src="@android:drawable/ic_media_play" />
+=======
+        android:src="@android:drawable/ic_dialog_email" />
+>>>>>>> 7d12327342397eabd2d0d5b1368f0a9f15e4e631
 
 </android.support.design.widget.CoordinatorLayout>
