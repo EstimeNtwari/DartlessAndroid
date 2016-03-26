@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.capstone.group1.dartlessdarts.MainActivity">
+    tools:context="com.capstone.group1.dartlessdartboard.MainScoreBoard">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -16,12 +16,12 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/material_blue_grey_800"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_main_score_board" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -29,10 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-<<<<<<< HEAD
-        android:src="@android:drawable/ic_media_play" />
-=======
-        android:src="@android:drawable/ic_dialog_email" />
->>>>>>> 7d12327342397eabd2d0d5b1368f0a9f15e4e631
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="#409e33"
+        android:clickable="true" />
 
 </android.support.design.widget.CoordinatorLayout>

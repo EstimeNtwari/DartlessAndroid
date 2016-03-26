@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "19.1.0"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.capstone.group1.dartlessdarts"
+        applicationId "com.capstone.group1.dartlessdartboard"
         minSdkVersion 22
         targetSdkVersion 23
         versionCode 1

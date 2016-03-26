@@ -1,4 +1,4 @@
-package com.capstone.group1.dartlessdarts;
+package com.capstone.group1.dartlessdartboard;
 
 import org.junit.Test;
 
