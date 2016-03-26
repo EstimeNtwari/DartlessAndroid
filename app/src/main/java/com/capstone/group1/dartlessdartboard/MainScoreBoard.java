@@ -5,9 +5,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.content.Intent;
+import android.app.Activity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class MainScoreBoard extends AppCompatActivity {
 
@@ -15,9 +18,18 @@ public class MainScoreBoard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_score_board);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("My title");
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+        GameData myGame = new GameData();
+        TextView myScore = (TextView) findViewById(R.id.CurrentScore);
+        TextView myDarts = (TextView) findViewById(R.id.Darts);
+        TextView turnID = (TextView) findViewById(R.id.TurnIndicator);
+        myScore.setText(String.valueOf(myGame.getScore(0)));
+        myDarts.setText(String.valueOf(myGame.getDarts(0)));
+        turnID.setText("Player "+String.valueOf(myGame.getCurrentTurn()+1)+"s Turns");
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +57,10 @@ public class MainScoreBoard extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //SWITCH TO SETTING ACTIVITY
+            Intent intent = new Intent(getApplicationContext(), Settings.class);
+            startActivity(intent);
+
             return true;
         }
 

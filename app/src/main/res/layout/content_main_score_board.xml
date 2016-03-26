@@ -20,7 +20,8 @@
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="88dp" />
+        android:layout_marginTop="100dp"
+        android:textSize="30dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -37,7 +38,9 @@
         android:id="@+id/CurrentScore"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp" />
+        android:layout_marginTop="45dp"
+        android:textSize="30dp"
+        android:layout_alignParentStart="false" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -45,8 +48,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Remaining Darts:"
         android:id="@+id/textView2"
-        android:layout_marginTop="56dp"
-        android:layout_below="@+id/CurrentScore"
+        android:textSize="30dp"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -57,7 +60,8 @@
         android:id="@+id/Darts"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp" />
+        android:layout_marginTop="45dp"
+        android:textSize="30dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -66,6 +70,16 @@
         android:id="@+id/ResetButton"
         android:layout_marginTop="70dp"
         android:layout_below="@+id/Darts"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Player &quot;&quot;s Turn"
+        android:id="@+id/TurnIndicator"
+        android:textColor="#ff0000"
+        android:layout_below="@+id/LogoImage"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
