@@ -17,6 +17,7 @@ public class GameData {
         darts[0]=3;
         darts[1]=3;
 
+
         currentTurn=0;
     }
 
@@ -49,9 +50,7 @@ public class GameData {
     public void newTurn(int playerID){
         darts[playerID]=3;
 
-
     }
-
 
 
     public void resetData(){
@@ -63,6 +62,9 @@ public class GameData {
         darts[1]=3;
 
     }
-
+    public void resetDarts(){
+        darts[0]=3;
+        darts[1]=3;
+    }
 
 }
