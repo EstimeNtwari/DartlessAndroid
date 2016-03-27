@@ -1,24 +1,15 @@
 package com.capstone.group1.dartlessdartboard;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
-import android.app.Activity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.io.InputStream;
-import java.io.OutputStream;
 
 
 public class MainScoreBoard extends AppCompatActivity {
@@ -37,11 +28,15 @@ public class MainScoreBoard extends AppCompatActivity {
 
 
         final GameData myGame = new GameData();
-        final TextView myScore = (TextView) findViewById(R.id.CurrentScore);
-        final TextView myDarts = (TextView) findViewById(R.id.Darts);
+        final TextView myScore = (TextView) findViewById(R.id.Player1Score);
+        final TextView myDarts = (TextView) findViewById(R.id.Player1Darts);
+        final TextView myScore2 = (TextView) findViewById(R.id.Player2Score);
+        final TextView myDarts2 = (TextView) findViewById(R.id.Player2Darts);
         final TextView turnID = (TextView) findViewById(R.id.TurnIndicator);
         myScore.setText(String.valueOf(myGame.getScore(0)));
         myDarts.setText(String.valueOf(myGame.getDarts(0)));
+        myScore2.setText(String.valueOf(myGame.getScore(1)));
+        myDarts2.setText(String.valueOf(myGame.getDarts(1)));
         turnID.setText("Player " + String.valueOf(myGame.getCurrentTurn() + 1) + "s Turns");
 
 
@@ -54,9 +49,14 @@ public class MainScoreBoard extends AppCompatActivity {
 
 
                 myGame.subScore(myGame.getCurrentTurn(), 10);
-                myDarts.setText(String.valueOf(myGame.getDarts(myGame.getCurrentTurn())));
-                myScore.setText(String.valueOf(myGame.getScore(myGame.getCurrentTurn())));
+                myDarts.setText(String.valueOf(myGame.getDarts(0)));
+                myScore.setText(String.valueOf(myGame.getScore(0)));
                 turnID.setText("Player " + String.valueOf(myGame.getCurrentTurn() + 1) + "s Turns");
+
+
+                myDarts2.setText(String.valueOf(myGame.getDarts(1)));
+                myScore2.setText(String.valueOf(myGame.getScore(1)));
+
 
                 if(myGame.getDarts(myGame.getCurrentTurn())==0){
                     myGame.resetDarts();
@@ -74,8 +74,10 @@ public class MainScoreBoard extends AppCompatActivity {
             public void onClick(View view) {
 
                 myGame.resetData();
-                myDarts.setText(String.valueOf(myGame.getDarts(myGame.getCurrentTurn())));
-                myScore.setText(String.valueOf(myGame.getScore(myGame.getCurrentTurn())));
+                myDarts.setText(String.valueOf(myGame.getDarts(0)));
+                myScore.setText(String.valueOf(myGame.getScore(0)));
+                myDarts2.setText(String.valueOf(myGame.getDarts(1)));
+                myScore2.setText(String.valueOf(myGame.getScore(1)));
                 turnID.setText("Player " + String.valueOf(myGame.getCurrentTurn() + 1) + "s Turns");
             }
         });

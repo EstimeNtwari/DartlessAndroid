@@ -53,6 +53,8 @@
         android:layout_height="wrap_content"
         android:text="Set Brightness"
         android:id="@+id/SetBrightness"
+        android:textColor="#ffffff"
+        android:background="@drawable/mybutton"
         android:layout_alignTop="@+id/seekBar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="46dp" />
@@ -81,6 +83,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Connect to Dartboard"
+        android:textColor="#ffffff"
+        android:background="@drawable/mybutton"
         android:id="@+id/button"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
