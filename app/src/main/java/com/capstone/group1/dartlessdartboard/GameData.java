@@ -7,6 +7,7 @@ public class GameData {
 
     protected int[] score = new int[2];
     protected int[] darts = new int[2];
+    protected int[] throwBuff = new int[6];
     protected int currentTurn;
     protected int player_count;
 
@@ -14,12 +15,22 @@ public class GameData {
         score[0]=401;
         score[1]=401;
 
-        darts[0]=3;
-        darts[1]=3;
+        darts[0]=0;
+        darts[1]=0;
 
 
         currentTurn=0;
     }
+
+    public int getDartScore(int dart){
+        return throwBuff[dart +3*currentTurn];
+    }
+
+    public void setDartScore(int points){
+        throwBuff[darts[currentTurn] + 3*currentTurn]= points;
+    }
+
+
 
 
     public int getCurrentTurn(){
@@ -38,33 +49,43 @@ public class GameData {
     public int getScore(int playerID){
         return(score[playerID]);
     }
-    public int getDarts(int playerID){
-        return darts[playerID];
-    }
+    public int getDarts(int playerID){return darts[playerID];}
 
     public void subScore(int playerID, int points){
         score[playerID]-=points;
-        darts[playerID]--;
-    }
-
-    public void newTurn(int playerID){
-        darts[playerID]=3;
+        setDartScore(points);
+        darts[playerID]++;
 
     }
+
+
 
 
     public void resetData(){
 
         score[0]=401;
         score[1]=401;
+        currentTurn=0;
 
-        darts[0]=3;
-        darts[1]=3;
+        darts[0]=0;
+        darts[1]=0;
+
+        throwBuff[0]=0;
+        throwBuff[1]=0;
+        throwBuff[2]=0;
+        throwBuff[3]=0;
+        throwBuff[4]=0;
+        throwBuff[5]=0;
+
 
     }
     public void resetDarts(){
-        darts[0]=3;
-        darts[1]=3;
+        darts[0]=0;
+        darts[1]=0;
+        throwBuff[0+3*currentTurn]=0;
+        throwBuff[1+3*currentTurn]=0;
+        throwBuff[2+3*currentTurn]=0;
+
     }
 
 }

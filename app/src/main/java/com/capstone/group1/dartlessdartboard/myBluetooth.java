@@ -9,6 +9,7 @@ import android.os.Parcel;
 import android.os.ParcelUuid;
 import android.os.Parcelable;
 import android.util.Log;
+import android.os.Handler;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,8 +29,16 @@ public class myBluetooth  {
     public BluetoothDevice device, HC06;
 
     private OutputStream outputStream;
-    private InputStream inStream;
+    private InputStream mmInputStream;
     BluetoothSocket socket;
+    public String readBTData;
+    public int readState=0;
+
+    Thread workerThread;
+    byte[] readBuffer;
+    int readBufferPosition;
+    int counter;
+    volatile boolean stopWorker;
 
     public boolean connected, ScanDone, mControl;
 
@@ -83,6 +92,11 @@ public class myBluetooth  {
     }
 
     public void connectDevice() throws IOException {
+
+        String address="30:14:12:12:10:85";
+
+        HC06 = myRadio.getRemoteDevice(address);
+
         int pin=1234;
 
         Log.w("MYAPP", "SOC" + HC06.getAddress());
@@ -99,9 +113,88 @@ public class myBluetooth  {
         //socket = HC06.createRfcommSocketToServiceRecord(MY_UUID); //set socket to connected device
         socket.connect(); //establish connection
         outputStream = socket.getOutputStream();
-        inStream = socket.getInputStream();
+        mmInputStream = socket.getInputStream();
         connected=true;
 
+    }
+
+    public void disconnect() throws IOException {
+        try {
+            socket.close();
+            connected=false;
+        } catch (IOException e) {
+
+        }
+
+        //create subroutine to  disconnect socket
+    }
+
+    public void write(byte s) throws IOException {
+        if(connected) {
+            try {
+                outputStream.write(s);
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    void beginListenForData()
+    {
+        final Handler handler = new Handler();
+        final byte delimiter = 10; //This is the ASCII code for a newline character
+
+        stopWorker = false;
+        readBufferPosition = 0;
+        readBuffer = new byte[1024];
+        workerThread = new Thread(new Runnable()
+        {
+            public void run()
+            {
+                while(!Thread.currentThread().isInterrupted() && !stopWorker)
+                {
+                    try
+                    {
+                        int bytesAvailable = mmInputStream.available();
+                        if(bytesAvailable > 0)
+                        {
+                            byte[] packetBytes = new byte[bytesAvailable];
+                            mmInputStream.read(packetBytes);
+                            for(int i=0;i<bytesAvailable;i++)
+                            {
+                                byte b = packetBytes[i];
+                                if(b == delimiter)
+                                {
+                                    byte[] encodedBytes = new byte[readBufferPosition];
+                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
+                                    final String data = new String(encodedBytes, "US-ASCII");
+                                    readBufferPosition = 0;
+
+                                    handler.post(new Runnable()
+                                    {
+                                        public void run()
+                                        {
+
+                                            //do something with data. IE send to MAIN ACTIVITY
+                                            readBTData= data;
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    readBuffer[readBufferPosition++] = b;
+                                }
+                            }
+                        }
+                    }
+                    catch (IOException ex)
+                    {
+                        stopWorker = true;
+                    }
+                }
+            }
+        });
+
+        workerThread.start();
     }
 
 
