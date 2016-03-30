@@ -35,7 +35,7 @@ public class MainScoreBoard extends AppCompatActivity {
     private Handler mHandler = new Handler();
     ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
     int test=0;
-    private int mInterval = 1000;
+    private int mInterval = 2000;
 
 
 
@@ -46,9 +46,12 @@ public class MainScoreBoard extends AppCompatActivity {
         @Override
         public void run() {
             try {
+
                  //this function can change value of mInterval.
-                Toast toast = Toast.makeText(getApplicationContext(), ""+((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readBTData+"", Toast.LENGTH_SHORT);
-                toast.show();
+                if(((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readState==1 && ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readBuffer[0]==110) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "" + ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readBuffer[1] + "", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
 
             } finally {
                 // 100% guarantee that this always happens, even if
@@ -141,7 +144,7 @@ public class MainScoreBoard extends AppCompatActivity {
 
     public void updateUI(){
         updateScores();
-        turnID.setText("Player " + myGame.currentTurn + "s Turns");
+        turnID.setText("Player " + myGame.currentTurn+1 + "s Turns");
     }
 
     public void updateScores(){
@@ -150,7 +153,7 @@ public class MainScoreBoard extends AppCompatActivity {
         myDarts2.setText(String.valueOf(myGame.getDarts(1)));
         myScore2.setText(String.valueOf(myGame.getScore(1)));
         throw1Score.setText("" + myGame.getDartScore(0));
-        throw2Score.setText(""+myGame.getDartScore(1));
+        throw2Score.setText("" + myGame.getDartScore(1));
         throw3Score.setText(""+myGame.getDartScore(2));
     }
 
@@ -178,6 +181,13 @@ public class MainScoreBoard extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        stopRepeatingTask();
+
     }
 
 
