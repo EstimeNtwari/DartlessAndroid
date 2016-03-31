@@ -11,7 +11,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.capstone.group1.dartlessdartboard.MainScoreBoard"
     tools:showIn="@layout/activity_main_score_board"
-    android:background="#fafafa">
+    android:background="@drawable/background">
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
         android:id="@+id/Player1Score"
         android:textSize="25dp"
         android:layout_alignTop="@+id/textView"
-        android:layout_marginLeft="115dp" />
+        android:layout_marginLeft="100dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -81,9 +81,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Player &quot;&quot;s Turn"
         android:id="@+id/TurnIndicator"
-        android:textColor="#ff0000"
         android:layout_below="@+id/LogoImage"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="35dp" />
 
 
 
@@ -118,7 +118,7 @@
         android:textSize="25dp"
         android:layout_above="@+id/textView2"
         android:layout_toEndOf="@+id/ResetButton"
-        android:layout_marginLeft="70dp" />
+        android:layout_marginLeft="60dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -129,26 +129,28 @@
         android:textSize="25dp"
         android:layout_alignBottom="@+id/textView7"
         android:layout_toEndOf="@+id/LogoImage"
-        android:layout_marginLeft="115dp" />
+        android:layout_marginLeft="105dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Player 1"
-        android:id="@+id/textView10"
+        android:id="@+id/scoreID1"
         android:layout_above="@+id/Player1Score"
         android:layout_alignStart="@+id/textView"
-        android:layout_marginBottom="15dp" />
+        android:layout_marginBottom="15dp"
+        android:textSize="25dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Player 2"
-        android:id="@+id/textView11"
-        android:layout_alignTop="@+id/textView10"
-        android:layout_alignStart="@+id/textView6" />
+        android:id="@+id/scoreID2"
+        android:layout_alignTop="@+id/scoreID1"
+        android:layout_alignStart="@+id/textView6"
+        android:textSize="25dp" />
 
 
     <TableLayout
@@ -164,14 +166,14 @@
             android:layout_margin="1dp"
             >
 
-            <TextView android:text="Current Turn"
+            <TextView android:text="CURRENT TURN"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_span="3"
                 android:textSize="25dp"
-                />
+                android:id="@+id/ScoreTitle" />
 
         </TableRow>
 
@@ -186,7 +188,7 @@
                 android:layout_height="wrap_content"
 
                 android:textSize="20dp"
-                 />
+                android:id="@+id/T1Sign" />
             <TextView android:text="Throw 2"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -194,7 +196,7 @@
                 android:layout_height="wrap_content"
 
                 android:textSize="20dp"
-                 />
+                android:id="@+id/T2Sign" />
             <TextView android:text="Throw 3"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -202,7 +204,7 @@
                 android:layout_height="wrap_content"
 
                 android:textSize="20dp"
-                 />
+                android:id="@+id/T3Sign" />
         </TableRow>
         <TableRow
             android:background="#FFFFFF"
@@ -215,7 +217,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:textSize="22dp"
+                android:textSize="35dp"
                 android:id="@+id/Throw1" />
             <TextView android:text="XX"
                 android:layout_weight="1"
@@ -223,7 +225,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:textSize="22dp"
+                android:textSize="35dp"
                 android:id="@+id/Throw2" />
             <TextView android:text="XX"
                 android:layout_weight="1"
@@ -231,7 +233,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:textSize="22dp"
+                android:textSize="35dp"
                 android:id="@+id/Throw3" />
         </TableRow>
     </TableLayout>

@@ -57,6 +57,10 @@ public class GameData {
             setDartScore(points);
             darts[playerID]++;
             return true;
+        }else if(points==0){
+            setDartScore(-1);
+            darts[playerID]++;
+            return false;
         }else{
             setDartScore(-1); //represents score Overflow
             darts[playerID]++;

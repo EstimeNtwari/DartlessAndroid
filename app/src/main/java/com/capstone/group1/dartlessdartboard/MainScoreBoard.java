@@ -1,5 +1,6 @@
 package com.capstone.group1.dartlessdartboard;
 
+import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -32,12 +33,19 @@ public class MainScoreBoard extends AppCompatActivity {
     TextView throw1Score;
     TextView throw2Score;
     TextView throw3Score;
+    TextView t1Sign;
+    TextView t2Sign;
+    TextView t3Sign;
+    TextView sSign;
+    TextView scoreID1;
+    TextView scoreID2;
+
     GameData myGame;
     int incomingSeg=0;
     private Handler mHandler = new Handler();
     ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
     int test=0;
-    private int mInterval = 50;
+    private int mInterval = 250;
 
     SoundPool mySounds;
     SoundPool.Builder soundPoolBuilder;
@@ -47,10 +55,19 @@ public class MainScoreBoard extends AppCompatActivity {
 
     int soundID_dart;
 
+    Typeface chalk_font;
+    Typeface bubble_font;
+    Typeface block_font;
+    Typeface thin_font;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_score_board);
+        chalk_font = Typeface.createFromAsset(getAssets(),  "fonts/PWChalk.ttf");
+        bubble_font = Typeface.createFromAsset(getAssets(),  "fonts/Snacker.ttf");
+        block_font = Typeface.createFromAsset(getAssets(),  "fonts/Blocky.ttf");
+        thin_font = Typeface.createFromAsset(getAssets(),  "fonts/Thin.otf");
 
         attributesBuilder = new AudioAttributes.Builder();
         attributesBuilder.setUsage(AudioAttributes.USAGE_GAME);
@@ -73,6 +90,21 @@ public class MainScoreBoard extends AppCompatActivity {
         throw1Score= (TextView) findViewById(R.id.Throw1);
         throw2Score= (TextView) findViewById(R.id.Throw2);
         throw3Score= (TextView) findViewById(R.id.Throw3);
+        t1Sign= (TextView) findViewById(R.id.T1Sign);
+        t2Sign= (TextView) findViewById(R.id.T2Sign);
+        t3Sign= (TextView) findViewById(R.id.T3Sign);
+        sSign = (TextView) findViewById(R.id.ScoreTitle);
+        scoreID1= (TextView) findViewById(R.id.scoreID1);
+        scoreID2= (TextView) findViewById(R.id.scoreID2);
+        throw1Score.setTypeface(chalk_font);
+        throw2Score.setTypeface(chalk_font);
+        throw3Score.setTypeface(chalk_font);
+        scoreID1.setTypeface(thin_font);
+        scoreID2.setTypeface(thin_font);
+
+
+        sSign.setTypeface(chalk_font);
+        turnID.setTypeface(block_font);
 
 
         myGame = new GameData();
@@ -144,7 +176,7 @@ public class MainScoreBoard extends AppCompatActivity {
 
     public void updateUI(){
         updateScores();
-        turnID.setText("Player " + (myGame.currentTurn+1) + "s Turns");
+        turnID.setText("PLAYER " + (myGame.currentTurn+1) + "s TURN");
     }
 
     public void updateScores(){
@@ -153,17 +185,23 @@ public class MainScoreBoard extends AppCompatActivity {
         myDarts2.setText(String.valueOf(myGame.getDarts(1)));
         myScore2.setText(String.valueOf(myGame.getScore(1)));
         if(myGame.getDartScore(0)==-1){
-            throw1Score.setText("Over");
+            throw1Score.setText("OVER");
+        }else if(myGame.getDartScore(0)==-2){
+            throw2Score.setText("MISS");
         }else {
             throw1Score.setText("" + myGame.getDartScore(0));
         }
         if(myGame.getDartScore(1)==-1){
-            throw2Score.setText("Over");
+            throw2Score.setText("OVER");
+        }else if(myGame.getDartScore(1)==-2){
+            throw2Score.setText("MISS");
         }else {
             throw2Score.setText("" + myGame.getDartScore(1));
         }
         if(myGame.getDartScore(2)==-1){
-            throw3Score.setText("Over");
+            throw3Score.setText("OVER");
+        }else if(myGame.getDartScore(2)==-2){
+            throw2Score.setText("MISS");
         }else {
             throw3Score.setText("" + myGame.getDartScore(2));
         }
