@@ -1,9 +1,10 @@
 package com.capstone.group1.dartlessdartboard;
 
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
@@ -18,7 +19,6 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 
 public class MainScoreBoard extends AppCompatActivity {
@@ -39,15 +39,30 @@ public class MainScoreBoard extends AppCompatActivity {
     int test=0;
     private int mInterval = 50;
 
+    SoundPool mySounds;
+    SoundPool.Builder soundPoolBuilder;
 
+    AudioAttributes attributes;
+    AudioAttributes.Builder attributesBuilder;
 
-
-
+    int soundID_dart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_score_board);
+
+        attributesBuilder = new AudioAttributes.Builder();
+        attributesBuilder.setUsage(AudioAttributes.USAGE_GAME);
+        attributesBuilder.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION);
+        attributes= attributesBuilder.build();
+
+        soundPoolBuilder = new SoundPool.Builder();
+        soundPoolBuilder.setAudioAttributes(attributes);
+        mySounds= soundPoolBuilder.build();
+
+        soundID_dart = mySounds.load(this, R.raw.voice, 1);
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         myScore = (TextView) findViewById(R.id.Player1Score);
@@ -87,7 +102,7 @@ public class MainScoreBoard extends AppCompatActivity {
 
 
                         }
-                    }, 500);
+                    }, 2000);
 
 
 
@@ -110,11 +125,14 @@ public class MainScoreBoard extends AppCompatActivity {
             public void onClick(View view) {
 
                 myGame.resetData();
+                mySounds.play(soundID_dart, 1, 1, 0, 0, 2);
+                Toast toast = Toast.makeText(getApplicationContext(), "NEW GAME STARTED ", Toast.LENGTH_LONG);
+                toast.show();
                 try {
                     ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.write((byte)5);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast toast = Toast.makeText(getApplicationContext(), "NOT LISTENING", Toast.LENGTH_LONG);
+                    toast = Toast.makeText(getApplicationContext(), "NOT LISTENING", Toast.LENGTH_LONG);
                     toast.show();
                 }
                 updateUI();
@@ -215,7 +233,7 @@ public class MainScoreBoard extends AppCompatActivity {
 
 
                             }
-                        }, 500);
+                        }, 2000);
 
 
 

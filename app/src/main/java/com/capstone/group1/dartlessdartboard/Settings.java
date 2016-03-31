@@ -1,5 +1,6 @@
 package com.capstone.group1.dartlessdartboard;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -78,12 +79,13 @@ public class Settings extends AppCompatActivity {
                         try {
                             ((cBaseApplication) Settings.this.getApplicationContext()).myBlueComms.connectDevice();
                             conStatus.setText("Connected");
+                            conStatus.setTextColor(Color.GREEN);
                             conButton.setText("Disconnect from Dartboard");
                             Toast toast = Toast.makeText(getApplicationContext(), "Succesfully Connected", Toast.LENGTH_SHORT);
                             toast.show();
                         } catch (IOException e) {
                             e.printStackTrace();
-                            Toast toast = Toast.makeText(getApplicationContext(), "Error Connecting. Please check Dartboard", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(getApplicationContext(), "Error Connecting. Please check dartboard and try again", Toast.LENGTH_SHORT);
                             toast.show();
 
 
@@ -113,10 +115,8 @@ public class Settings extends AppCompatActivity {
 
 
                 try {
-
-                    ((cBaseApplication) Settings.this.getApplicationContext()).myBlueComms.write((byte)'[');
                     ((cBaseApplication) Settings.this.getApplicationContext()).myBlueComms.write(brightness);
-                    Toast toast = Toast.makeText(getApplicationContext(), ""+brightness, Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Brightness set to level "+brightness, Toast.LENGTH_SHORT);
                     toast.show();
                 } catch (IOException e) {
                     e.printStackTrace();
