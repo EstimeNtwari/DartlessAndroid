@@ -36,6 +36,7 @@ public class myBluetooth  {
 
     Thread workerThread;
     byte[] readBuffer;
+    public byte readChar;
     int readBufferPosition;
     int counter;
     volatile boolean stopWorker;
@@ -142,7 +143,7 @@ public class myBluetooth  {
     void beginListenForData()
     {
         final Handler handler = new Handler();
-        final byte delimiter = 111; //This is the ASCII code for a newline character
+        final byte delimiter = 3; //This is the ASCII code for a newline character
 
         stopWorker = false;
         readBufferPosition = 0;
@@ -151,7 +152,7 @@ public class myBluetooth  {
         {
             public void run()
             {
-                Log.w("MYAPP", "READ THREAD RUNNING\n");
+                Log.w("MYAPP", "READ THREAD RUNNING \n");
                 while(!Thread.currentThread().isInterrupted() && !stopWorker)
                 {
                     try
@@ -159,7 +160,8 @@ public class myBluetooth  {
                         int bytesAvailable = mmInputStream.available();
                         if(bytesAvailable > 0)
                         {
-                            Log.w("MYAPP", ""+bytesAvailable+ "BYTES ARE AVAILABLE\n");
+                            readBufferPosition=0;
+                            Log.w("MYAPP", ""+bytesAvailable+ " BYTES ARE AVAILABLE\n");
                             byte[] packetBytes = new byte[bytesAvailable];
                             mmInputStream.read(packetBytes);
 
@@ -167,7 +169,10 @@ public class myBluetooth  {
                             {
 
                                 byte b = packetBytes[i];
-                                Log.w("MYAPP", "BYTES ARE AVAILABLE2 " +b+"\n");
+                                if(b!=2 && b!=3 && b!=10){
+                                    readChar=b;
+                                }
+                                Log.w("MYAPP", "BYTES ARE AVAILABLE 2: "+b+"\n");
                                 if(b == delimiter)
                                 {
                                     byte[] encodedBytes = new byte[readBufferPosition];
@@ -191,7 +196,7 @@ public class myBluetooth  {
                                 {
 
                                     readBuffer[readBufferPosition++] = b;
-                                    Log.w("MYAPP", "PLACED BYTE IN POSITION"+readBufferPosition+ "\n");
+                                    Log.w("MYAPP", "PLACED BYTE IN POSITION "+(readBufferPosition-1)+ "\n");
                                 }
                             }
                         }

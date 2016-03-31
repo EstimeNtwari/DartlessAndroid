@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,42 +33,14 @@ public class MainScoreBoard extends AppCompatActivity {
     TextView throw2Score;
     TextView throw3Score;
     GameData myGame;
+    int incomingSeg=0;
     private Handler mHandler = new Handler();
     ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
     int test=0;
-    private int mInterval = 2000;
+    private int mInterval = 50;
 
 
 
-
-
-
-    Runnable mStatusChecker = new Runnable() {
-        @Override
-        public void run() {
-            try {
-
-                 //this function can change value of mInterval.
-                if(((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readState==1 && ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readBuffer[0]==110) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "" + ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readBuffer[1] + "", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-
-            } finally {
-                // 100% guarantee that this always happens, even if
-                // your update method throws an exception
-                mHandler.postDelayed(mStatusChecker, mInterval);
-            }
-        }
-    };
-
-    void startRepeatingTask() {
-        mStatusChecker.run();
-    }
-
-    void stopRepeatingTask() {
-        mHandler.removeCallbacks(mStatusChecker);
-    }
 
 
 
@@ -98,22 +71,31 @@ public class MainScoreBoard extends AppCompatActivity {
             public void onClick(View view) {
                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG.setAction("Action", null).show();
 
+                myGame.subScore(myGame.getCurrentTurn(), 100);
                 if(myGame.getDarts(myGame.getCurrentTurn())==3){
+                    updateUI();
+                    myGame.changeTurn();
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         public void run() {
-                            Toast toast = Toast.makeText(getApplicationContext(), "PLAYER"+myGame.getCurrentTurn()+"TURN IS OVER", Toast.LENGTH_LONG);
+
+                            myGame.resetDarts();
+                            updateUI();
+                            Toast toast = Toast.makeText(getApplicationContext(), "PLAYER " + myGame.getCurrentTurn() + " TURN IS OVER", Toast.LENGTH_LONG);
                             toast.show();
+
+
+
                         }
-                    }, 1000);
+                    }, 500);
 
-                    myGame.resetDarts();
-                    myGame.changeTurn();
 
+
+
+                }else {
+
+                    updateUI();
                 }
-                myGame.subScore(myGame.getCurrentTurn(), 10);
-                updateUI();
-
 
 
 
@@ -144,7 +126,7 @@ public class MainScoreBoard extends AppCompatActivity {
 
     public void updateUI(){
         updateScores();
-        turnID.setText("Player " + myGame.currentTurn+1 + "s Turns");
+        turnID.setText("Player " + (myGame.currentTurn+1) + "s Turns");
     }
 
     public void updateScores(){
@@ -152,9 +134,22 @@ public class MainScoreBoard extends AppCompatActivity {
         myScore.setText(String.valueOf(myGame.getScore(0)));
         myDarts2.setText(String.valueOf(myGame.getDarts(1)));
         myScore2.setText(String.valueOf(myGame.getScore(1)));
-        throw1Score.setText("" + myGame.getDartScore(0));
-        throw2Score.setText("" + myGame.getDartScore(1));
-        throw3Score.setText(""+myGame.getDartScore(2));
+        if(myGame.getDartScore(0)==-1){
+            throw1Score.setText("Over");
+        }else {
+            throw1Score.setText("" + myGame.getDartScore(0));
+        }
+        if(myGame.getDartScore(1)==-1){
+            throw2Score.setText("Over");
+        }else {
+            throw2Score.setText("" + myGame.getDartScore(1));
+        }
+        if(myGame.getDartScore(2)==-1){
+            throw3Score.setText("Over");
+        }else {
+            throw3Score.setText("" + myGame.getDartScore(2));
+        }
+
     }
 
     @Override
@@ -186,8 +181,70 @@ public class MainScoreBoard extends AppCompatActivity {
     @Override
     public void onStop(){
         super.onStop();
-        stopRepeatingTask();
+        //stopRepeatingTask();
 
+    }
+
+    Runnable mStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+
+            try {
+
+                //this function can change value of mInterval.
+                if(((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readState==1 && ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readBuffer[0]==2) {
+
+
+                    incomingSeg= ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readChar;
+                    Log.w("MYGAME",  " SUBSCORE" +incomingSeg+"\n");
+                    myGame.subScore(myGame.getCurrentTurn(), incomingSeg);
+
+                    if(myGame.getDarts(myGame.getCurrentTurn())==3){
+                        Log.w("MYGAME",  " LAST TURN\n");
+                        updateUI();
+                        myGame.changeTurn();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+
+                                myGame.resetDarts();
+                                updateUI();
+                                Toast toast = Toast.makeText(getApplicationContext(), "PLAYER " + myGame.getCurrentTurn() + " TURN IS OVER", Toast.LENGTH_LONG);
+                                toast.show();
+
+
+
+                            }
+                        }, 500);
+
+
+
+
+                    }else {
+                        Log.w("MYGAME",  "MORE TURNS\n");
+                        updateUI();
+                    }
+
+                    Toast toast = Toast.makeText(getApplicationContext(), "RECEIVED " +incomingSeg+ " from Bluetooth", Toast.LENGTH_SHORT);
+                    toast.show();
+                    ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readState=0;
+
+                }
+
+            } finally {
+                // 100% guarantee that this always happens, even if
+                // your update method throws an exception
+                mHandler.postDelayed(mStatusChecker, mInterval);
+            }
+        }
+    };
+
+    void startRepeatingTask() {
+        mStatusChecker.run();
+    }
+
+    void stopRepeatingTask() {
+        mHandler.removeCallbacks(mStatusChecker);
     }
 
 
