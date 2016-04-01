@@ -19,7 +19,8 @@
             android:background="#2196f3"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:elevation="0dp">
 
         </android.support.v7.widget.Toolbar>
 
