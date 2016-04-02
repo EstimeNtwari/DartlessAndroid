@@ -38,6 +38,7 @@ public class myBluetooth  {
     byte[] readBuffer;
     public byte readChar;
     int readBufferPosition;
+    int[] pointValue= new int[83];
     int counter;
     volatile boolean stopWorker;
 

@@ -37,6 +37,7 @@
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainScoreBoard"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.capstone.group1.dartlessdartboard.MainScoreBoard" />

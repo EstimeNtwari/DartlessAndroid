@@ -23,7 +23,7 @@
         android:id="@+id/BluetoothSW"
         android:layout_marginTop="91dp"
         android:checked="false"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -33,7 +33,7 @@
         android:id="@+id/BrightBar"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="136dp"
+        android:layout_marginBottom="100dp"
         android:max="15"
         android:indeterminate="false" />
 
@@ -45,9 +45,10 @@
         android:id="@+id/textView3"
         android:layout_above="@+id/BrightBar"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="15dp"
         android:linksClickable="false"
-        android:textColor="#000000" />
+        android:textColor="#000000"
+        android:textSize="20dp" />
 
     <Button
         android:layout_width="match_parent"
@@ -66,9 +67,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Dartboard Status"
         android:id="@+id/textView4"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="40dp"
         android:layout_below="@+id/BluetoothSW"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textSize="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -78,7 +80,8 @@
         android:id="@+id/ConnectionStatus"
         android:layout_alignBottom="@+id/textView4"
         android:layout_alignParentEnd="true"
-        android:textColor="#ddff0000" />
+        android:textColor="#ddff0000"
+        android:textSize="20dp" />
 
     <Button
         android:layout_width="match_parent"
@@ -87,7 +90,72 @@
         android:textColor="#ffffff"
         android:background="@drawable/mybutton"
         android:id="@+id/ConnectButton"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="225dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Game Type"
+        android:id="@+id/textView5"
+        android:textColor="#000000"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="300dp"
+        android:textSize="20dp" />
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textView5"
+        android:layout_above="@+id/textView3"
+        android:id="@+id/radioGroup"
+        android:orientation="horizontal"
+        android:layout_alignParentStart="true"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="false"
+        android:layout_marginTop="20dp">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="301"
+            android:id="@+id/threeLabel"
+            android:checked="false"
+            android:layout_alignTop="@+id/radioGroup"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="left"
+            android:textSize="20dp"
+            android:onClick="onRadioButtonClicked"
+            android:layout_marginRight="30dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="501"
+            android:id="@+id/fiveLabel"
+            android:checked="false"
+            android:layout_below="@+id/textView5"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onRadioButtonClicked"
+            android:textSize="20dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="801"
+            android:id="@+id/eightLabel"
+            android:checked="false"
+            android:layout_alignTop="@+id/radioGroup"
+            android:layout_alignEnd="@+id/ConnectButton"
+            android:textSize="20dp"
+            android:onClick="onRadioButtonClicked"
+            android:layout_marginLeft="30dp" />
+
+
+    </RadioGroup>
 
 </RelativeLayout>

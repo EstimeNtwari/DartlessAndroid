@@ -9,11 +9,21 @@ public class GameData {
     protected int[] darts = new int[2];
     protected int[] throwBuff = new int[6];
     protected int currentTurn;
-    protected int player_count;
+    protected int gameType;
 
-    GameData(){
-        score[0]=401;
-        score[1]=401;
+    public int getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(int gameType) {
+        this.gameType = gameType;
+    }
+
+
+    GameData(int gData){
+        gameType=gData;
+        score[0]=gameType;
+        score[1]=gameType;
 
         darts[0]=0;
         darts[1]=0;
@@ -37,11 +47,13 @@ public class GameData {
         return currentTurn;
     }
 
-    public void changeTurn(){
+    public int changeTurn(){
         if(currentTurn==1){
             currentTurn=0;
+            return 0;
         }else{
             currentTurn=1;
+            return 1;
         }
 
     }
@@ -66,7 +78,6 @@ public class GameData {
             darts[playerID]++;
             return false;
         }
-
     }
 
 
@@ -74,8 +85,8 @@ public class GameData {
 
     public void resetData(){
 
-        score[0]=401;
-        score[1]=401;
+        score[0]=gameType;
+        score[1]=gameType;
         currentTurn=0;
 
         darts[0]=0;

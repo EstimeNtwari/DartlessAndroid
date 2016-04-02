@@ -118,9 +118,9 @@
         android:textStyle="bold"
         android:textColor="#444444"
         android:layout_below="@+id/textView6"
-        android:layout_alignStart="@id/textView2"
-        android:layout_marginLeft="196dp"
-        android:layout_marginTop="20dp" />
+        android:layout_alignStart="@id/LogoImage"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
