@@ -92,10 +92,12 @@ public class Settings extends AppCompatActivity {
 
 
         if(((cBaseApplication) Settings.this.getApplicationContext()).myBlueComms.getConnected()){
+
             conStatus.setText("Connected");
             conStatus.setTextColor(Color.GREEN);
             conButton.setText("Disconnect from Dartboard");
         }else{
+
             conStatus.setText("Disconnected");
             conStatus.setTextColor(Color.RED);
             conButton.setText("Connect to Dartboard");

@@ -10,6 +10,7 @@ public class GameData {
     protected int[] throwBuff = new int[6];
     protected int currentTurn;
     protected int gameType;
+    private int [] segPoints;
 
     public int getGameType() {
         return gameType;
@@ -21,9 +22,16 @@ public class GameData {
 
 
     GameData(int gData){
+
         gameType=gData;
         score[0]=gameType;
         score[1]=gameType;
+
+        segPoints = new int[] {0,50,25,
+                                20,1,18,4,13,6,10,15,2,17,3,19,7,16,8,11,14,9,12,5,
+                                60,3,54,12,39,18,30,45,6,51,9,57,21,48,24,33,42,27,36,15,
+                                20,1,18,4,13,6,10,15,2,17,3,19,7,16,8,11,14,9,12,5,
+                                40,2,36,8,26,12,20,30,4,34,6,38,14,32,16,22,28,18,24,10};
 
         darts[0]=0;
         darts[1]=0;
@@ -63,13 +71,13 @@ public class GameData {
     }
     public int getDarts(int playerID){return darts[playerID];}
 
-    public boolean subScore(int playerID, int points){
-        if( (score[playerID] - points) >=0) {
-            score[playerID] -= points;
-            setDartScore(points);
+    public boolean subScore(int playerID, int segment){
+        if( (score[playerID] - segPoints[segment]) >=0) {
+            score[playerID] -= segPoints[segment];
+            setDartScore(segPoints[segment]);
             darts[playerID]++;
             return true;
-        }else if(points==0){
+        }else if(segment==0){
             setDartScore(-1);
             darts[playerID]++;
             return false;

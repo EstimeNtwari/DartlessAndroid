@@ -38,8 +38,6 @@ public class myBluetooth  {
     byte[] readBuffer;
     public byte readChar;
     int readBufferPosition;
-    int[] pointValue= new int[83];
-    int counter;
     volatile boolean stopWorker;
 
     public boolean connected, ScanDone, mControl;
@@ -52,8 +50,17 @@ public class myBluetooth  {
 
 
 
-    public boolean getConnected(){return connected;}
-    public void setConnected(boolean c){connected=c;}
+    public boolean getConnected(){
+        if(socket==null){
+          return false;
+        }
+        else{
+            return socket.isConnected();
+        }
+
+    }
+
+
 
     public boolean BTstatus(){
         if (myRadio == null) {

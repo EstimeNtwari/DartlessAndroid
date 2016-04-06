@@ -1,12 +1,13 @@
 package com.capstone.group1.dartlessdartboard;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
@@ -22,7 +23,7 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.os.Vibrator;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -52,13 +53,14 @@ public class MainScoreBoard extends AppCompatActivity {
     RadioGroup group;
     SharedPreferences gamePref;
     SharedPreferences.Editor prefEditor;
+    Vibrator v;
 
-    GameData myGame;
+    static GameData myGame;
     int incomingSeg=0;
     private Handler mHandler = new Handler();
     ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
     int test=0;
-    private int mInterval = 250;
+    private int mInterval = 2;
 
     SoundPool mySounds;
     SoundPool.Builder soundPoolBuilder;
@@ -80,6 +82,7 @@ public class MainScoreBoard extends AppCompatActivity {
     private int soundID_P2win;
     private int soundID_miss;
     private int soundID_over;
+    Context context = this;
 
 
     @Override
@@ -93,45 +96,7 @@ public class MainScoreBoard extends AppCompatActivity {
         updateUI();
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG.setAction("Action", null).show();
 
-
-                myGame.subScore(myGame.getCurrentTurn(), 50);
-                mySounds.play(soundID_dart, 1, 1, 0, 0, 1);
-                if(myGame.getDarts(myGame.getCurrentTurn())==3){
-                    updateUI();
-
-                    myGame.changeTurn();
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        public void run() {
-                            turnID.startAnimation(shake);
-                            myGame.resetDarts();
-                            if(myGame.currentTurn==0){
-                                mySounds.play(soundID_P1, 1, 1, 0, 0, 1);
-                            }else{
-                                mySounds.play(soundID_P2, 1, 1, 0, 0, 1);
-                            }
-                            updateUI();
-                            Toast toast = Toast.makeText(getApplicationContext(), "PLAYER " + (myGame.getCurrentTurn()+1) + " TURN IS OVER", Toast.LENGTH_LONG);
-                            toast.show();
-
-                        }
-                    }, 2000);
-
-                }else {
-
-                    updateUI();
-                }
-
-
-
-            }
-        });
 
 
 
@@ -151,13 +116,7 @@ public class MainScoreBoard extends AppCompatActivity {
                     mySounds.play(soundID_newgame, 1, 1, 0, 0, 1);
                     Toast toast = Toast.makeText(getApplicationContext(), "NEW GAME STARTED ", Toast.LENGTH_LONG);
                     toast.show();
-                    try {
-                        ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.write((byte) 5);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        toast = Toast.makeText(getApplicationContext(), "NOT LISTENING", Toast.LENGTH_LONG);
-                        toast.show();
-                    }
+
                     updateUI();
                 } else {
 
@@ -219,18 +178,16 @@ public class MainScoreBoard extends AppCompatActivity {
         public void run() {
 
             try {
-                if (((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.getConnected()){
+                //if (((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.getConnected()){
 
                     //this function can change value of mInterval.
-                    if (((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readState == 1 &&
-                            ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readBuffer[0] == 2
-                            ) {
-
-
+                    if (((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readState ==1) {
+                        mySounds.play(soundID_dart, 1, 1, 0, 0, 1);
+                        v.vibrate(250);
                         incomingSeg = ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.readChar;
                         Log.w("MYGAME", " SUBSCORE" + incomingSeg + "\n");
                         myGame.subScore(myGame.getCurrentTurn(), incomingSeg);
-                        mySounds.play(soundID_dart, 1, 1, 0, 0, 1);
+
 
                         if (myGame.getDarts(myGame.getCurrentTurn()) == 3) {
                             Log.w("MYGAME", " LAST TURN\n");
@@ -241,17 +198,33 @@ public class MainScoreBoard extends AppCompatActivity {
                                 public void run() {
                                     turnID.startAnimation(shake);
                                     myGame.resetDarts();
+                                    try {
+                                        ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.write((byte) 20);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+
                                     if(myGame.currentTurn==0){
-                                        mySounds.play(soundID_P1, 1, 1, 0, 0, 1);
+                                        if(myGame.getScore(1)==0) {
+                                            mySounds.play(soundID_P2win,1,1,0,0,1);
+                                            growNewGame();
+                                        }else{
+                                            mySounds.play(soundID_P1, 1, 1, 0, 0, 1);
+                                        }
                                     }else{
-                                        mySounds.play(soundID_P2, 1, 1, 0, 0, 1);
+                                        if(myGame.getScore(0)==0) {
+                                            mySounds.play(soundID_P2win,1,1,0,0,1);
+                                            growNewGame();
+                                        }else{
+                                            mySounds.play(soundID_P2, 1, 1, 0, 0, 1);
+                                        }
                                     }
                                     updateUI();
                                     Toast toast = Toast.makeText(getApplicationContext(), "PLAYER " + myGame.getCurrentTurn() + " TURN IS OVER", Toast.LENGTH_LONG);
                                     toast.show();
 
                                 }
-                            }, 2000);
+                            }, 5000);
 
 
                         } else {
@@ -265,9 +238,9 @@ public class MainScoreBoard extends AppCompatActivity {
 
 
                     }
-            }{
 
-                }
+
+
 
             } finally {
                 // 100% guarantee that this always happens, even if
@@ -318,9 +291,17 @@ public class MainScoreBoard extends AppCompatActivity {
         if(getGamePref()==0){
             setGamePref(501);
         }
+        if(myGame == null){
+            myGame = new GameData(getGamePref());
+        }
+        if(getGamePref()!=myGame.gameType){
+            Log.w("MYAPP","GT="+myGame.gameType+ " GPREF = "+getGamePref()+  ". CHANGED GAMETYPE FROM SETTINGS.\n");
+            myGame = new GameData(getGamePref());
+            Log.w("MYAPP","NEW GT="+myGame.gameType+".\n");
+        }
 
-        myGame = new GameData(getGamePref());
 
+        v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
 
         attributesBuilder = new AudioAttributes.Builder();
         attributesBuilder.setUsage(AudioAttributes.USAGE_GAME);
