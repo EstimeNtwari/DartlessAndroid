@@ -91,20 +91,13 @@ public class MainScoreBoard extends AppCompatActivity {
 
         initMain();
 
-
-
         updateUI();
-
-
-
-
-
 
 
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (true){//((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.getConnected()) {
+                if (((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.getConnected()) {
                     shrinkNewGame();
                     try {
                         ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.write((byte) 20);

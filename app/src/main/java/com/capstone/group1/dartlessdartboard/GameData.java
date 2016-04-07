@@ -72,15 +72,15 @@ public class GameData {
     public int getDarts(int playerID){return darts[playerID];}
 
     public boolean subScore(int playerID, int segment){
-        if( (score[playerID] - segPoints[segment]) >=0) {
+        if(segment==0) {
+            setDartScore(-2);
+            darts[playerID]++;
+            return false;
+        }else if((score[playerID] - segPoints[segment]) >=0){
             score[playerID] -= segPoints[segment];
             setDartScore(segPoints[segment]);
             darts[playerID]++;
             return true;
-        }else if(segment==0){
-            setDartScore(-1);
-            darts[playerID]++;
-            return false;
         }else{
             setDartScore(-1); //represents score Overflow
             darts[playerID]++;
