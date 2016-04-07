@@ -104,7 +104,7 @@ public class MainScoreBoard extends AppCompatActivity {
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.getConnected()) {
+                if (true){//((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.getConnected()) {
                     shrinkNewGame();
                     try {
                         ((cBaseApplication) MainScoreBoard.this.getApplicationContext()).myBlueComms.write((byte) 20);
@@ -213,7 +213,7 @@ public class MainScoreBoard extends AppCompatActivity {
                                         }
                                     }else{
                                         if(myGame.getScore(0)==0) {
-                                            mySounds.play(soundID_P2win,1,1,0,0,1);
+                                            mySounds.play(soundID_P1win,1,1,0,0,1);
                                             growNewGame();
                                         }else{
                                             mySounds.play(soundID_P2, 1, 1, 0, 0, 1);
@@ -224,7 +224,7 @@ public class MainScoreBoard extends AppCompatActivity {
                                     toast.show();
 
                                 }
-                            }, 5000);
+                            }, 3000);
 
 
                         } else {
@@ -372,11 +372,11 @@ public class MainScoreBoard extends AppCompatActivity {
         myDarts2.setText(String.valueOf(myGame.getDarts(1)));
         myScore2.setText(String.valueOf(myGame.getScore(1)));
 
-        if(myGame.getDartScore(0)==-1 ){
+        if(myGame.getDartScore(0)==-1 && (myGame.getDarts(1)==1 || myGame.getDarts(0)==1)){
             throw1Score.setText("OVER");
             mySounds.play(soundID_over, 1, 1, 0, 0, 1);
             throw1Score.setAnimation(shake);
-        }else if(myGame.getDartScore(0)==-2){
+        }else if(myGame.getDartScore(0)==-2 && (myGame.getDarts(1)==1 || myGame.getDarts(0)==1)){
             throw1Score.setText("MISS");
             mySounds.play(soundID_miss, 1, 1, 0, 0, 1);
             throw1Score.setAnimation(shake);
@@ -384,11 +384,11 @@ public class MainScoreBoard extends AppCompatActivity {
             throw1Score.setText("" + myGame.getDartScore(0));
 
         }
-        if(myGame.getDartScore(1)==-1){
+        if(myGame.getDartScore(1)==-1 && (myGame.getDarts(1)==2 || myGame.getDarts(0)==2)){
             throw2Score.setText("OVER");
             mySounds.play(soundID_over, 1, 1, 0, 0, 1);
             throw2Score.setAnimation(shake);
-        }else if(myGame.getDartScore(1)==-2){
+        }else if(myGame.getDartScore(1)==-2 && (myGame.getDarts(1)==2 || myGame.getDarts(0)==2)){
             throw2Score.setText("MISS");
             mySounds.play(soundID_miss, 1, 1, 0, 0, 1);
             throw2Score.setAnimation(shake);
@@ -396,11 +396,11 @@ public class MainScoreBoard extends AppCompatActivity {
             throw2Score.setText("" + myGame.getDartScore(1));
 
         }
-        if(myGame.getDartScore(2)==-1){
+        if(myGame.getDartScore(2)==-1 && (myGame.getDarts(1)==3 || myGame.getDarts(0)==3)){
             throw3Score.setText("OVER");
             mySounds.play(soundID_over, 1, 1, 0, 0, 1);
             throw3Score.setAnimation(shake);
-        }else if(myGame.getDartScore(2)==-2){
+        }else if(myGame.getDartScore(2)==-2 && (myGame.getDarts(1)==3 || myGame.getDarts(0)==3)){
             throw3Score.setText("MISS");
             mySounds.play(soundID_miss, 1, 1, 0, 0, 1);
             throw3Score.setAnimation(shake);
